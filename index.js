@@ -50,12 +50,50 @@ app.get('/api/persons/:id', (request, response) => {
     }
 })
 
+
+
+
 app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
 
     response.status(204).end()
 })
+
+
+const generateId = () => {
+    const newId = Math.floor(Math.random() * (9999999999999-1) + 1)
+    
+    return newId
+  }
+
+
+app.post('/api/persons', (request, response) => {
+    const newperson = request.body
+
+    if(persons.some(person => person.name === newperson.name)){
+        return response.status(400).json({
+            error: 'Name must be unique'
+        })
+    }
+    if(!newperson.name || !newperson.number){
+        return response.status(400).json({ 
+            error: 'Name or number missing' 
+          })
+    }
+
+    const person = {
+        id: generateId(),
+        name: newperson.name,
+        number: newperson.number
+        
+    }
+    persons = persons.concat(person)
+
+    console.log(newperson)
+    response.json(newperson)
+})
+
 
 const PORT = 3001
 app.listen(PORT, () => {
