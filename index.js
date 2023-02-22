@@ -3,6 +3,8 @@ const app = express()
 
 app.use(express.json())
 
+__dirname = "FullStack-osa3"
+
 let persons = [
     {
         id: 1,
@@ -20,18 +22,22 @@ let persons = [
         number: "12-43-234345"
     },
     {
-        id:4, 
+        id:4,
         name: "Mary Poppendick",
         number: "39-23-6423122"
     }
 ]
 
+app.get('/info', (request, response) => {
+    var date = new Date(Date.now())
+    response.send('<p> Phonebook has info for ' + persons.length +' people</p>'
+    +'<p>'+ date +'</p>')
+    
+  })
+
 app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
-
-
-
 
 
 const PORT = 3001
